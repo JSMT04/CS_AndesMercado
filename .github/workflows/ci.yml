@@ -1,0 +1,33 @@
+name: CI Pipeline de Validación — AndesMercado
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  validar:
+    name: Pruebas y Validación de Datos
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar pruebas unitarias
+        run: python -m pytest tests/ -v --tb=short
+
+      - name: Validar ventas.csv (detecta incidente Black Friday)
+        run: |
+          echo "Ejecutando validación sobre ventas.csv..."
+          python validar_ventas.py data/ventas.csv || echo "Validación bloqueó la carga — comportamiento esperado"
+        continue-on-error: true

@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+.env
+
+# pytest
+.pytest_cache/
+.cache/
+
+# Distribución / empaquetado
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Bases de datos locales
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
