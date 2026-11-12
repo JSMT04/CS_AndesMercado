@@ -27,7 +27,4 @@ jobs:
         run: python -m pytest tests/ -v --tb=short
 
       - name: Validar ventas.csv (detecta incidente Black Friday)
-        run: |
-          echo "Ejecutando validación sobre ventas.csv..."
-          python validar_ventas.py data/ventas.csv || echo "Validación bloqueó la carga — comportamiento esperado"
-        continue-on-error: true
+        run: python validar_ventas.py data/ventas.csv
