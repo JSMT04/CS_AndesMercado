@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<style>
+body { background: #0c1017; color: #f0f6fc; font-family: 'Consolas', 'Courier New', monospace; padding: 24px; margin: 0; }
+.window { background: #161b22; border: 1px solid #30363d; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); overflow: hidden; margin-bottom: 30px; width: 850px; }
+.header { background: #21262d; padding: 10px 16px; display: flex; align-items: center; border-bottom: 1px solid #30363d; }
+.dots { display: flex; gap: 8px; margin-right: 16px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+.title { color: #8b949e; font-size: 13px; font-weight: bold; }
+.content { padding: 18px; font-size: 13px; line-height: 1.5; white-space: pre-wrap; }
+.prompt { color: #58a6ff; }
+.cmd { color: #f0f6fc; font-weight: bold; }
+.fail-box { color: #f85149; border-left: 3px solid #f85149; padding-left: 12px; margin: 10px 0; background: rgba(248,81,73,0.1); }
+.success-box { color: #3fb950; border-left: 3px solid #3fb950; padding-left: 12px; margin: 10px 0; background: rgba(63,185,80,0.1); }
+.badge-fail { background: #f85149; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+.badge-ok { background: #238636; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class='window'>
+  <div class='header'>
+    <div class='dots'><div class='dot red'></div><div class='dot yellow'></div><div class='dot green'></div></div>
+    <div class='title'>Terminal — Ejecución con datos de prueba (Incidente Black Friday 28-Nov)</div>
+  </div>
+  <div class='content'>
+<span class='prompt'>PS D:\AndesMercado&gt;</span> <span class='cmd'>python validar_ventas.py data/ventas.csv</span>
+
+<div class='fail-box'>
+============================================================
+VALIDACIÓN FALLIDA — se encontraron los siguientes errores:
+============================================================
+  ✖ R4 — 3 venta(s) superan COP 5,000,000:
+        [{'id_venta': 1012, 'monto': 18990000.0},
+         {'id_venta': 1013, 'monto': 45990000.0},
+         {'id_venta': 1014, 'monto': 8990050.0}]
+  ✖ R5 — Anomalía en canal 'en_linea' el 2025-11-28:
+        total=73,970,050.00, promedio_prev=473,667.08,
+        ratio=156.16x (umbral=3.0x)
+============================================================
+Total de errores: 2
+Carga bloqueada. Corrija los datos antes de reintentar.
+</div>
+<span class='prompt'>PS D:\AndesMercado&gt;</span> <span class='cmd'>echo </span>
+<span class='badge-fail'>1 (Carga rechazada automáticamente - pipeline detenido)</span>
+  </div>
+</div>
+
+<div class='window'>
+  <div class='header'>
+    <div class='dots'><div class='dot red'></div><div class='dot yellow'></div><div class='dot green'></div></div>
+    <div class='title'>Terminal — Ejecución con datos corregidos (Montos normalizados en COP)</div>
+  </div>
+  <div class='content'>
+<span class='prompt'>PS D:\AndesMercado&gt;</span> <span class='cmd'>python validar_ventas.py data/ventas.csv</span>
+
+<div class='success-box'>
+✔ Validación exitosa — todos los datos cumplen las reglas.
+</div>
+<span class='prompt'>PS D:\AndesMercado&gt;</span> <span class='cmd'>echo </span>
+<span class='badge-ok'>0 (Validación superada exitosamente - carga autorizada)</span>
+
+<span class='prompt'>PS D:\AndesMercado&gt;</span> <span class='cmd'>python -m pytest tests/ -v</span>
+============================= test session starts =============================
+tests/test_etl.py::test_datos_validos PASSED                             [ 11%]
+tests/test_etl.py::test_r1_columnas_faltantes PASSED                     [ 22%]
+tests/test_etl.py::test_r1_columnas_extra PASSED                         [ 33%]
+tests/test_etl.py::test_r2_id_nulos PASSED                               [ 44%]
+tests/test_etl.py::test_r2_id_duplicados PASSED                          [ 55%]
+tests/test_etl.py::test_r3_canal_invalido PASSED                         [ 66%]
+tests/test_etl.py::test_r4_monto_excede_limite PASSED                    [ 77%]
+tests/test_etl.py::test_r5_anomalia_diaria PASSED                        [ 88%]
+tests/test_etl.py::test_r4_y_r5_incidente_noviembre PASSED               [100%]
+============================== 9 passed in 1.15s ==============================
+  </div>
+</div>
+
+</body>
+</html>
